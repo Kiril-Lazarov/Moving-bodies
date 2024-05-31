@@ -33,6 +33,7 @@ def create_background(screen_width, screen_height, bg_color, units, length):
 
         number = font_small.render(f'{units-i}', True, line_color)
         background_surface.blit(number, (vertical_line_x-5,number_y))
+        
     description = font_small.render(f'Distance in light seconds', True, line_color)
     background_surface.blit(description, (x_line_start+550, y_line+50))
     
@@ -46,3 +47,11 @@ def update_first_light_front(first_light_front, displacement_per_frame):
 
 def gamma_factor(v):
     return np.sqrt(1 - v ** 2)
+
+# Update the coordinates of the messages emitted by the spaceship that are shown on the screen.
+def update_message_position(vis_angle, space_ship_pos, signal):
+    
+    x = signal.origin_position[0] + signal.radius    
+    y= signal.origin_position[1] - 50
+    
+    return x, y
