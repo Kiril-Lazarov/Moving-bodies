@@ -62,3 +62,23 @@ def update_message_position(vis_angle, signal):
     y= signal.origin_position[1] - 50
     
     return x, y
+
+# Update the dictionary that contains the data of the received signals from the receiver
+def update_readings(readings_dict, count, time, message):
+    x_time = 1000
+    x_message = 1250
+    init_y = 30
+    y_change = 30
+    y_displace = init_y + count * y_change
+    
+    readings_dict[count] = {'time': [time, x_time, y_displace],
+                            'message': [message, x_message, y_displace]}
+    return readings_dict
+
+def show_readings(readings_dict, font_big, win):
+    for data in readings_dict.values():
+        time_text = font_big.render(f'{data["time"][0]}', True, (0, 0, 0))
+        message_text = font_big.render(f'{data["message"][0]}', True, (0, 0, 0))
+        
+        win.blit(time_text, (data["time"][1], data["time"][2]))
+        win.blit(message_text, (data["message"][1], data["message"][2])) 
