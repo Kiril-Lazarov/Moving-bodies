@@ -16,7 +16,10 @@ def create_background(screen_width, screen_height, bg_color, units, length):
     # Coordinate x-line parameters
     x_line_start = screen_width-1400
     x_line_end = screen_width-100
-    y_line = screen_height-150    
+    
+    # Height of the numbers line
+    y_line = screen_height-150
+    
     line_color = (185, 185, 185)
     
     markers.append({
@@ -43,8 +46,8 @@ def create_background(screen_width, screen_height, bg_color, units, length):
         'y_line': y_line,
         'vertical_line_x': [],
         'numbers': [],
-        'signals_start_positions': [],
-        'spaceship_position': []
+        'signals_start_positions': {},
+        'spaceship_last_position': None
     }
     '''New logic'''
 
@@ -52,18 +55,14 @@ def create_background(screen_width, screen_height, bg_color, units, length):
         vertical_line_x = x_line_start + i*length
 
         pygame.draw.line(background_surface, color = line_color, start_pos=(vertical_line_x, vertical_line_start),
-                     end_pos = (vertical_line_x, vertical_line_end), width=1)
-        
-        '''New logic'''
-        screen_objects['vertical_line_x'].append(vertical_line_x)
-        '''New logic'''
+                     end_pos = (vertical_line_x, vertical_line_end), width=1)        
+       
+        screen_objects['vertical_line_x'].append(vertical_line_x)        
 
         number = font_small.render(f'{units-i}', True, line_color)
-        background_surface.blit(number, (vertical_line_x-5,number_y))
-        
-        '''New logic'''
-        screen_objects['numbers'].append([units-i, vertical_line_x-5,number_y])
-        '''New logic'''
+        background_surface.blit(number, (vertical_line_x-5,number_y))        
+      
+        screen_objects['numbers'].append([units-i, vertical_line_x-5,number_y])      
         
     description = font_small.render(f'Distance in light seconds', True, line_color)
     background_surface.blit(description, (x_line_start+550, y_line+50))
