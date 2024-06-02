@@ -2,12 +2,10 @@ import numpy as np
 import pygame 
 from datetime import datetime
 
-def create_background(screen_width, screen_height, bg_color, units, length):
+def create_background(screen_width, screen_height, bg_color, line_color, font_small, units, length):
     # Create background object
     background_surface = pygame.Surface((screen_width, screen_height))
     
-    # Create font
-    font_small = pygame.font.Font(None, 26)
     background_surface.fill(bg_color)
     
     markers = []   
@@ -20,8 +18,6 @@ def create_background(screen_width, screen_height, bg_color, units, length):
     # Height of the numbers line
     y_line = screen_height-150
     
-    line_color = (185, 185, 185)
-    
     markers.append({
         'receiver_x': x_line_end,
         'receiver_y': y_line
@@ -31,13 +27,13 @@ def create_background(screen_width, screen_height, bg_color, units, length):
                          end_pos = (x_line_end, y_line), width=2)
         
    
-
+    # Upper and lower bounds of the vertical divisions of the coordinate line
     vertical_line_start = y_line - 10
     vertical_line_end = y_line + 10
+    
+    # 
     number_y = vertical_line_end + 15
-    
-    '''New logic'''
-    
+     
     screen_objects = {
         'x_line_start': x_line_start,
         'vertical_line_start': vertical_line_start,
@@ -49,7 +45,7 @@ def create_background(screen_width, screen_height, bg_color, units, length):
         'signals_start_positions': {},
         'spaceship_last_position': None
     }
-    '''New logic'''
+  
 
     for i in range(units+1):
         vertical_line_x = x_line_start + i*length
@@ -105,4 +101,22 @@ def show_readings(readings_dict, font_big, win):
         message_text = font_big.render(f'{data["message"][0]}', True, (0, 0, 0))
         
         win.blit(time_text, (data["time"][1], data["time"][2]))
-        win.blit(message_text, (data["message"][1], data["message"][2])) 
+        win.blit(message_text, (data["message"][1], data["message"][2]))
+        
+def shift_screen_objects(screen_objects, step):
+    
+    # Dictionary with functions to shift the coordinates of the screen objects by `step` pixels 
+    shift_funcs = {
+        'x_line_start': screen_objects['x_line_start'] + step,    
+        'x_line_end': screen_objects['x_line_end'] + step,      
+        'vertical_line_x': [line_x + step for line_x in screen_objects['vertical_line_x']],
+        'numbers': [[x[0], x[1] + step, x[2]] for x in screen_objects['numbers']],
+        'signals_start_positions': {key:[position[0] + step, position[1]] for key,position in screen_objects['signals_start_positions'].items()},
+        'spaceship_last_position': [screen_objects['spaceship_last_position'][0] + step, screen_objects['spaceship_last_position'][1]]
+    }
+    
+    # Shift the coordinates of the screen objects
+    for key in shift_funcs:
+        screen_objects[key] = shift_funcs[key]
+        
+    return screen_objects
