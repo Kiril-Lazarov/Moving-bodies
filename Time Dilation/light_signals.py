@@ -24,6 +24,6 @@ class LightSignal:
     
     @property
     def is_receiver_reached(self):
-        if self.radius >= self.receiver_position['receiver_x'] - self.origin_position[0]:
+        if self.radius >= abs(self.receiver_position['receiver_x'] - self.origin_position[0]):
             return True
         return False
