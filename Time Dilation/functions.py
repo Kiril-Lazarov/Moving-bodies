@@ -2,7 +2,7 @@ import numpy as np
 import pygame 
 from datetime import datetime
 
-def create_background(screen_width, screen_height, bg_color, line_color, font_small, units, length):
+def create_background(screen_width, screen_height, bg_color, line_color, font_small, units, length, after_stop = False):
     # Create background object
     background_surface = pygame.Surface((screen_width, screen_height))
     
@@ -20,8 +20,9 @@ def create_background(screen_width, screen_height, bg_color, line_color, font_sm
     
     markers.append({
         'receiver_x': x_line_end,
-        'receiver_y': y_line
+        'receiver_y': y_line,
     })
+    
     
     pygame.draw.line(background_surface, color = line_color, start_pos=(x_line_start, y_line),
                          end_pos = (x_line_end, y_line), width=2)
@@ -31,39 +32,45 @@ def create_background(screen_width, screen_height, bg_color, line_color, font_sm
     vertical_line_start = y_line - 10
     vertical_line_end = y_line + 10
     
-    # 
+    
     number_y = vertical_line_end + 15
      
+   
+        
     screen_objects = {
-        'x_line_start': x_line_start,
-        'vertical_line_start': vertical_line_start,
-        'vertical_line_end': vertical_line_end,
-        'x_line_end': x_line_end,
-        'y_line': y_line,
-        'vertical_line_x': [],
-        'numbers': [],
-        'signals_start_positions': {},
-        'spaceship_last_position': None
+    'x_line_start': x_line_start,
+    'vertical_line_start': vertical_line_start,
+    'vertical_line_end': vertical_line_end,
+    'x_line_end': x_line_end,
+    'y_line': y_line,
+    'vertical_line_x': [],
+    'numbers': [],
+    'signals_start_positions': {},
+    'spaceship_last_position': None
     }
   
-
     for i in range(units+1):
         vertical_line_x = x_line_start + i*length
 
         pygame.draw.line(background_surface, color = line_color, start_pos=(vertical_line_x, vertical_line_start),
                      end_pos = (vertical_line_x, vertical_line_end), width=1)        
-       
-        screen_objects['vertical_line_x'].append(vertical_line_x)        
-
-        number = font_small.render(f'{units-i}', True, line_color)
-        background_surface.blit(number, (vertical_line_x-5,number_y))        
-      
-        screen_objects['numbers'].append([units-i, vertical_line_x-5,number_y])      
         
+        screen_objects['vertical_line_x'].append(vertical_line_x)
+        screen_objects['numbers'].append([units-i, vertical_line_x-5,number_y])
+
+        number = units-i if not after_stop else i
+        
+        number_text = font_small.render(f'{units-i}', True, line_color)
+        background_surface.blit(number_text, (vertical_line_x-5,number_y))        
+
+        
+
     description = font_small.render(f'Distance in light seconds', True, line_color)
     background_surface.blit(description, (x_line_start+550, y_line+50))
-    
+        
     return background_surface, markers, screen_objects
+    
+    
 
 
 def update_first_light_front(first_light_front, displacement_per_frame):
@@ -110,7 +117,7 @@ def shift_screen_objects(screen_objects, step):
         'x_line_start': screen_objects['x_line_start'] + step,    
         'x_line_end': screen_objects['x_line_end'] + step,      
         'vertical_line_x': [line_x + step for line_x in screen_objects['vertical_line_x']],
-        'numbers': [[x[0], x[1] + step, x[2]] for x in screen_objects['numbers']],
+        'numbers': [[x[0], x[1] -5 + step, x[2]] for x in screen_objects['numbers']],
         'signals_start_positions': {key:[position[0] + step, position[1]] for key,position in screen_objects['signals_start_positions'].items()},
         'spaceship_last_position': [screen_objects['spaceship_last_position'][0] + step, screen_objects['spaceship_last_position'][1]]
     }
