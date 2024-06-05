@@ -84,7 +84,7 @@ def gamma_factor(v):
 # Update the coordinates of the messages emitted by the spaceship that are shown on the screen.
 def update_message_position(vis_angle, signal, after_stop = False):
     
-    x = signal.origin_position[0] + signal.radius if not after_stop else signal.origin_position[0] - signal.radius
+    x = signal.origin_position[0] + signal.radius if not after_stop else signal.origin_position[0] - signal.radius - 15
     y= signal.origin_position[1] - 50
     
     return x, y
@@ -102,13 +102,13 @@ def update_readings(readings_dict, count, time, message):
     return readings_dict
 
 
-def show_readings(readings_dict, font_big, win):
+def show_readings(readings_dict, font_big, data_layer):
     for data in readings_dict.values():
         time_text = font_big.render(f'{data["time"][0]}', True, (0, 0, 0))
         message_text = font_big.render(f'{data["message"][0]}', True, (0, 0, 0))
         
-        win.blit(time_text, (data["time"][1], data["time"][2]))
-        win.blit(message_text, (data["message"][1], data["message"][2]))
+        data_layer.blit(time_text, (data["time"][1], data["time"][2]))
+        data_layer.blit(message_text, (data["message"][1], data["message"][2]))
         
 def shift_screen_objects(screen_objects, step):
     
