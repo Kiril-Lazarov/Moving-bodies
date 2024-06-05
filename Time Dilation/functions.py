@@ -60,7 +60,7 @@ def create_background(screen_width, screen_height, bg_color, line_color, font_sm
 
         number = units-i if not after_stop else i
         
-        number_text = font_small.render(f'{units-i}', True, line_color)
+        number_text = font_small.render(f'{number}', True, line_color)
         background_surface.blit(number_text, (vertical_line_x-5,number_y))        
 
         
@@ -82,9 +82,9 @@ def gamma_factor(v):
     return np.sqrt(1 - v ** 2)
 
 # Update the coordinates of the messages emitted by the spaceship that are shown on the screen.
-def update_message_position(vis_angle, signal):
+def update_message_position(vis_angle, signal, after_stop = False):
     
-    x = signal.origin_position[0] + signal.radius    
+    x = signal.origin_position[0] + signal.radius if not after_stop else signal.origin_position[0] - signal.radius
     y= signal.origin_position[1] - 50
     
     return x, y
