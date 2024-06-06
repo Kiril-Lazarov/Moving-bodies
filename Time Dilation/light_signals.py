@@ -3,7 +3,7 @@ import numpy as np
 
 class LightSignal:
     
-    receiver_position = (0, 0)
+    receiver_position = [0, 0]
     
     def __init__(self,origin_position, message, radius=0):
         self.origin_position = origin_position
