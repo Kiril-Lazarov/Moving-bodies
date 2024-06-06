@@ -1,0 +1,3 @@
+titles_collection = {
+    0: 'Let a spaceship move through space at 85 percent of the speed of light. At a certain\nposition ahead of it, there is a receiver whose function is to receive signals,\nrecord the exact time of reception of these signals, and the messages they carry.\nLet the spaceship start emitting signals at regular intervals of 1 second according\nto its own clock when it is exactly 15 light-seconds away from the receiver.'
+}
