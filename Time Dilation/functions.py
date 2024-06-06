@@ -117,7 +117,7 @@ def shift_screen_objects(screen_objects, step):
         'x_line_start': screen_objects['x_line_start'] + step,    
         'x_line_end': screen_objects['x_line_end'] + step,      
         'vertical_line_x': [line_x + step for line_x in screen_objects['vertical_line_x']],
-        'numbers': [[x[0], x[1] -5 + step, x[2]] for x in screen_objects['numbers']],
+        'numbers': [[x[0], x[1] + step, x[2]] for x in screen_objects['numbers']],
         'signals_start_positions': {key:[position[0] + step, position[1]] for key,position in screen_objects['signals_start_positions'].items()},
         'spaceship_last_position': [screen_objects['spaceship_last_position'][0] + step, screen_objects['spaceship_last_position'][1]]
     }
@@ -127,3 +127,19 @@ def shift_screen_objects(screen_objects, step):
         screen_objects[key] = shift_funcs[key]
         
     return screen_objects
+
+# Writes explanations on the screen  
+def show_titles(win, title_layer,titles_font, title):
+    
+    text = title.split('\n')
+    title_layer.fill((0, 0, 0, 0))
+    count_lines = len(text)
+    
+    for i in range(len(text)):   
+        line =  titles_font.render(text[i], True, (0, 0, 0))
+        title_layer.blit(line, (10, 200 + i * 40))
+        
+    win.blit(title_layer, (0, 0))
+    
+    pygame.display.update()
+    pygame.time.delay(5000)
