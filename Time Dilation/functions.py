@@ -73,9 +73,9 @@ def create_background(screen_width, screen_height, bg_color, line_color, font_sm
     
 
 
-def update_first_light_front(first_light_front, displacement_per_frame):
-    first_light_front[0] += displacement_per_frame
-    return first_light_front
+def update_obj_position(obj, displacement_per_frame):
+    obj[0] += displacement_per_frame
+    return obj
 
 
 def gamma_factor(v):
@@ -131,15 +131,16 @@ def shift_screen_objects(screen_objects, step):
 # Writes explanations on the screen  
 def show_titles(win, title_layer,titles_font, title):
     
-    text = title.split('\n')
+    print(title)
+    text = title['a'][0].split('\n')
     title_layer.fill((0, 0, 0, 0))
-    count_lines = len(text)
+    delay = title['a'][1] * 1000
     
     for i in range(len(text)):   
         line =  titles_font.render(text[i], True, (0, 0, 0))
-        title_layer.blit(line, (10, 200 + i * 40))
+        title_layer.blit(line, (10, 150 + i * 40))
         
     win.blit(title_layer, (0, 0))
     
     pygame.display.update()
-    pygame.time.delay(5000)
+    pygame.time.delay(delay)
