@@ -129,7 +129,8 @@ def shift_screen_objects(screen_objects, step):
     return screen_objects
 
 # Writes explanations on the screen  
-def show_titles(win, title_layer, data_layer, background_surface, titles_font, rocket, receiver, title):
+def show_titles(win, title_layer, data_layer, background_surface, titles_font,
+                emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos, title):
     
     # Clear the title layer
     title_layer.fill((0, 0, 0, 0))
@@ -152,12 +153,21 @@ def show_titles(win, title_layer, data_layer, background_surface, titles_font, r
         title_layer.fill((0, 0, 0, 0))        
         win.fill((255, 255, 255))
         
-        
+        # Reattach the objects on the screen
         win.blit(background_surface, (0, 0))
         win.blit(data_layer, (0, 0))
         win.blit(title_layer, (0, 0))
         win.blit(rocket.image, rocket.position)
         win.blit(receiver.image, receiver.rect)
         
+        if emitted_signals:
+            for signal in emitted_signals:
+                
+                pygame.draw.arc(win, (255, 255, 0), signal.rect, start_angle, end_angle, 2)
+                pygame.draw.circle(win, (255, 0, 0), signal.origin_position, radius = 2)
+        
+            pygame.draw.circle(win, (255, 0, 0), space_ship_pos, radius = 2)
+        
+        # One second pause between the explanations
         pygame.display.update()
         pygame.time.delay(1000)
