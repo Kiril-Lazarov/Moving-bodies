@@ -15,7 +15,7 @@ def create_background(screen_width, screen_height, bg_color, line_color, font_sm
     x_line_start = screen_width-1400
     x_line_end = screen_width-100
     
-    # Height of the numbers line
+    # Height of the numbers lineс
     y_line = screen_height-150
     
     markers.append({
@@ -129,18 +129,35 @@ def shift_screen_objects(screen_objects, step):
     return screen_objects
 
 # Writes explanations on the screen  
-def show_titles(win, title_layer,titles_font, title):
+def show_titles(win, title_layer, data_layer, background_surface, titles_font, rocket, receiver, title):
     
-    print(title)
-    text = title['a'][0].split('\n')
+    # Clear the title layer
     title_layer.fill((0, 0, 0, 0))
-    delay = title['a'][1] * 1000
+  
     
-    for i in range(len(text)):   
-        line =  titles_font.render(text[i], True, (0, 0, 0))
-        title_layer.blit(line, (10, 150 + i * 40))
+    for key, value in title.items():
+        text = title[key][0].split('\n')
+        delay = title[key][1] * 1000
+    
+        for i in range(len(text)):   
+            line =  titles_font.render(text[i], True, (0, 0, 0))
+            title_layer.blit(line, (10, 150 + i * 40))
         
-    win.blit(title_layer, (0, 0))
+        win.blit(title_layer, (0, 0))
     
-    pygame.display.update()
-    pygame.time.delay(delay)
+        pygame.display.update()
+        pygame.time.delay(delay)
+        
+        # Clear title and win layers
+        title_layer.fill((0, 0, 0, 0))        
+        win.fill((255, 255, 255))
+        
+        
+        win.blit(background_surface, (0, 0))
+        win.blit(data_layer, (0, 0))
+        win.blit(title_layer, (0, 0))
+        win.blit(rocket.image, rocket.position)
+        win.blit(receiver.image, receiver.rect)
+        
+        pygame.display.update()
+        pygame.time.delay(1000)
