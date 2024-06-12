@@ -128,46 +128,159 @@ def shift_screen_objects(screen_objects, step):
         
     return screen_objects
 
-# Writes explanations on the screen  
-def show_titles(win, title_layer, data_layer, background_surface, titles_font,
-                emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos, title):
+# # Writes explanations on the screen  
+# def show_titles(win, title_layer, data_layer, background_surface, titles_font,
+#                 emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos, title, frame):
     
-    # Clear the title layer
-    title_layer.fill((0, 0, 0, 0))
+#     # Clear the title layer
+#     title_layer.fill((0, 0, 0, 0))
   
     
+#     for key, value in title.items():
+#         text = title[key][0].split('\n')
+#         delay = title[key][1] * 1000
+        
+#         if frame == 3528 and key != 'a':
+#             # print(f"Processing key: {key}, frame: {frame}")
+            
+#             if key == 'b':
+#                 # Clear title and win layers
+#                 title_layer.fill((0, 0, 0, 0))        
+#                 win.fill((255, 255, 255))
+            
+#             for i in range(len(text)):   
+#                 line =  titles_font.render(text[i], True, (0, 0, 0))
+#                 title_layer.blit(line, (10, 10 + i * 40))
+                
+#             win.blit(title_layer, (0, 0))
+           
+#             pygame.display.update()
+#             pygame.display.flip()
+#             pygame.time.delay(delay)
+            
+#             # Clear title and win layers
+#             title_layer.fill((0, 0, 0, 0))        
+#             win.fill((255, 255, 255))
+               
+            
+#         else:
+#             for i in range(len(text)):   
+#                 line =  titles_font.render(text[i], True, (0, 0, 0))
+#                 title_layer.blit(line, (10, 150 + i * 40))
+
+#             win.blit(title_layer, (0, 0))
+
+#             pygame.display.update()
+#             pygame.display.flip()
+#             pygame.time.delay(delay)
+
+#             # Clear title and win layers
+#             title_layer.fill((0, 0, 0, 0))        
+#             win.fill((255, 255, 255))
+
+#             # Reattach the objects on the screen
+#             win.blit(background_surface, (0, 0))
+#             win.blit(data_layer, (0, 0))
+#             win.blit(title_layer, (0, 0))
+#             win.blit(rocket.image, rocket.position)
+#             win.blit(receiver.image, receiver.rect)
+
+#             if emitted_signals:
+#                 for signal in emitted_signals:
+
+#                     pygame.draw.arc(win, (255, 255, 0), signal.rect, start_angle, end_angle, 2)
+#                     pygame.draw.circle(win, (255, 0, 0), signal.origin_position, radius = 2)
+
+#             pygame.draw.circle(win, (255, 0, 0), space_ship_pos, radius = 2)
+        
+#         # One second pause between the explanations
+#         pygame.display.update()
+#         pygame.display.flip()
+#         pygame.time.delay(1000)
+
+
+
+
+def show_titles(win, title_layer, data_layer, background_surface, titles_font,
+                emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos, title, frame):
+    import sys
+    # Clear the title layer
+    title_layer.fill((0, 0, 0, 0))
+
     for key, value in title.items():
         text = title[key][0].split('\n')
         delay = title[key][1] * 1000
-    
-        for i in range(len(text)):   
-            line =  titles_font.render(text[i], True, (0, 0, 0))
-            title_layer.blit(line, (10, 150 + i * 40))
-        
-        win.blit(title_layer, (0, 0))
-    
-        pygame.display.update()
-        pygame.time.delay(delay)
-        
-        # Clear title and win layers
-        title_layer.fill((0, 0, 0, 0))        
-        win.fill((255, 255, 255))
-        
-        # Reattach the objects on the screen
-        win.blit(background_surface, (0, 0))
-        win.blit(data_layer, (0, 0))
-        win.blit(title_layer, (0, 0))
-        win.blit(rocket.image, rocket.position)
-        win.blit(receiver.image, receiver.rect)
-        
-        if emitted_signals:
-            for signal in emitted_signals:
+        start_time = pygame.time.get_ticks()
+        end_time = start_time + delay
+
+        if frame == 3528 and key != 'a':
+            if key == 'b':
+                # Clear title and win layers
+                title_layer.fill((0, 0, 0, 0))        
+                win.fill((255, 255, 255))
+            
+            for i in range(len(text)):   
+                line =  titles_font.render(text[i], True, (0, 0, 0))
+                title_layer.blit(line, (10, 10 + i * 40))
                 
-                pygame.draw.arc(win, (255, 255, 0), signal.rect, start_angle, end_angle, 2)
-                pygame.draw.circle(win, (255, 0, 0), signal.origin_position, radius = 2)
-        
-            pygame.draw.circle(win, (255, 0, 0), space_ship_pos, radius = 2)
-        
+            win.blit(title_layer, (0, 0))
+           
+            pygame.display.update()
+            pygame.display.flip()
+
+            # Wait for the specified delay without blocking
+            while pygame.time.get_ticks() < end_time:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                      
+            
+            # Clear title and win layers
+            title_layer.fill((0, 0, 0, 0))        
+            win.fill((255, 255, 255))
+            
+        else:
+            for i in range(len(text)):   
+                line =  titles_font.render(text[i], True, (0, 0, 0))
+                title_layer.blit(line, (10, 150 + i * 40))
+
+            win.blit(title_layer, (0, 0))
+
+            pygame.display.update()
+            pygame.display.flip()
+
+            # Wait for the specified delay without blocking
+            while pygame.time.get_ticks() < end_time:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+
+            # Clear title and win layers
+            title_layer.fill((0, 0, 0, 0))        
+            win.fill((255, 255, 255))
+
+            # Reattach the objects on the screen
+            win.blit(background_surface, (0, 0))
+            win.blit(data_layer, (0, 0))
+            win.blit(title_layer, (0, 0))
+            win.blit(rocket.image, rocket.position)
+            win.blit(receiver.image, receiver.rect)
+
+            if emitted_signals:
+                for signal in emitted_signals:
+                    pygame.draw.arc(win, (255, 255, 0), signal.rect, start_angle, end_angle, 2)
+                    pygame.draw.circle(win, (255, 0, 0), signal.origin_position, radius=2)
+
+            pygame.draw.circle(win, (255, 0, 0), space_ship_pos, radius=2)
+
         # One second pause between the explanations
+        one_second_pause = pygame.time.get_ticks() + 1000
+        while pygame.time.get_ticks() < one_second_pause:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                 
         pygame.display.update()
-        pygame.time.delay(1000)
+        pygame.display.flip()
+
