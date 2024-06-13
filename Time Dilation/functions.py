@@ -129,6 +129,7 @@ def shift_screen_objects(screen_objects, step):
         
     return screen_objects
 
+
 def pause(duration):
     start_time = pygame.time.get_ticks()
     while pygame.time.get_ticks() - start_time < duration:
@@ -139,10 +140,14 @@ def clear_layer(params):
     for layer, param in params.items():
         layer.fill(param)
         
+def update_display():
+    pygame.display.update()
+    pygame.display.flip()
+        
 # Writes explanations on the screen 
 def show_titles(win, title_layer, data_layer, background_surface, titles_font,
                 emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos, title, frame):
-
+    
     # Clear the title layer
     clear_layer({title_layer: (0,0,0,0)})
     
@@ -159,38 +164,29 @@ def show_titles(win, title_layer, data_layer, background_surface, titles_font,
                 title_layer.blit(line, (10, 10 + i * 40))
                 
             win.blit(title_layer, (0, 0))
-            pygame.display.update()
-            pygame.display.flip()            
+            update_display()           
         
-            pause(duration)                
+            pause(duration)
             
             # Clear title and win layers
             clear_layer({title_layer: (0,0,0,0), win: (255, 255, 255)})
             
-            pygame.display.update()
-            pygame.display.flip()
+            update_display()
             
-           
-            
-                
         else:
             for i in range(len(text)):   
                 line = titles_font.render(text[i], True, (0, 0, 0))
                 title_layer.blit(line, (10, 150 + i * 40))
 
             win.blit(title_layer, (0, 0))
-            pygame.display.update()
-            pygame.display.flip()
+            
+            update_display()
 
             pause(duration)
 
-            # Clear title and win layers
-            # title_layer.fill((0, 0, 0, 0))        
-            # win.fill((255, 255, 255))
-            
             clear_layer({title_layer: (0,0,0,0), win: (255, 255, 255)})
-
-            # Reattach the objects on the screen
+            
+            #Reattach the objects on the screen
             win.blit(background_surface, (0, 0))
             win.blit(data_layer, (0, 0))
             win.blit(title_layer, (0, 0))
@@ -204,9 +200,6 @@ def show_titles(win, title_layer, data_layer, background_surface, titles_font,
 
             pygame.draw.circle(win, (255, 0, 0), space_ship_pos, radius=2)
             
-            pygame.display.update()
-            pygame.display.flip()
+            update_display()
             
-            
-
         pause(1000)
