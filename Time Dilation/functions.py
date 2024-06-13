@@ -16,7 +16,7 @@ def create_background(screen_width, screen_height, bg_color, line_color, font_sm
     x_line_start = screen_width-1400
     x_line_end = screen_width-100
     
-    # Height of the numbers lineс
+    # Height of the numbers lines
     y_line = screen_height-150
     
     markers.append({
@@ -129,63 +129,66 @@ def shift_screen_objects(screen_objects, step):
         
     return screen_objects
 
-# Writes explanations on the screen  
+def pause(duration):
+    start_time = pygame.time.get_ticks()
+    while pygame.time.get_ticks() - start_time < duration:
+        pygame.event.pump()
+
+        
+def clear_layer(params):
+    for layer, param in params.items():
+        layer.fill(param)
+        
+# Writes explanations on the screen 
 def show_titles(win, title_layer, data_layer, background_surface, titles_font,
                 emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos, title, frame):
-    
+
     # Clear the title layer
-    title_layer.fill((0, 0, 0, 0))
-  
+    clear_layer({title_layer: (0,0,0,0)})
+    
     for key, value in title.items():
         text = title[key][0].split('\n')
-        delay = title[key][1] * 1000
-        
+        duration = title[key][1] * 1000       
+     
         if frame == 3528 and key != 'a':
-            # Clear title and win layers
-            title_layer.fill((0, 0, 0, 0))        
-            win.fill((255, 255, 255))
-            print(key)
+   
+            clear_layer({title_layer: (0,0,0,0), win: (255, 255, 255)})
+            
             for i in range(len(text)):   
-                line =  titles_font.render(text[i], True, (0, 0, 0))
+                line = titles_font.render(text[i], True, (0, 0, 0))
                 title_layer.blit(line, (10, 10 + i * 40))
                 
             win.blit(title_layer, (0, 0))
-           
+            pygame.display.update()
+            pygame.display.flip()            
+        
+            pause(duration)                
+            
+            # Clear title and win layers
+            clear_layer({title_layer: (0,0,0,0), win: (255, 255, 255)})
+            
             pygame.display.update()
             pygame.display.flip()
             
-            # Wait for a very short time without blocking
-            pygame.time.delay(10)
+           
             
-            # Wait for the specified delay without blocking
-            pygame.time.delay(delay)
-            
-            # Clear title and win layers
-            title_layer.fill((0, 0, 0, 0))        
-            win.fill((255, 255, 255))
-            
-            # pygame.display.update()
-            # pygame.display.flip()
-            
+                
         else:
             for i in range(len(text)):   
-                line =  titles_font.render(text[i], True, (0, 0, 0))
+                line = titles_font.render(text[i], True, (0, 0, 0))
                 title_layer.blit(line, (10, 150 + i * 40))
 
             win.blit(title_layer, (0, 0))
-
             pygame.display.update()
             pygame.display.flip()
 
-            # Wait for a very short time without blocking
-            pygame.time.delay(10)
-
-            # Wait for the specified delay without blocking
-            pygame.time.delay(delay)
+            pause(duration)
 
             # Clear title and win layers
-            title_layer.fill((0, 0, 0, 0))        
-            win.fill((255, 255, 255))
+            # title_layer.fill((0, 0, 0, 0))        
+            # win.fill((255, 255, 255))
+            
+            clear_layer({title_layer: (0,0,0,0), win: (255, 255, 255)})
 
             # Reattach the objects on the screen
             win.blit(background_surface, (0, 0))
@@ -197,13 +200,13 @@ def show_titles(win, title_layer, data_layer, background_surface, titles_font,
             if emitted_signals:
                 for signal in emitted_signals:
                     pygame.draw.arc(win, (255, 255, 0), signal.rect, start_angle, end_angle, 2)
-                    pygame.draw.circle(win, (255, 0, 0), signal.origin_position, radius = 2)
+                    pygame.draw.circle(win, (255, 0, 0), signal.origin_position, radius=2)
 
-            pygame.draw.circle(win, (255, 0, 0), space_ship_pos, radius = 2)
-        
-        # One second pause between the explanations
-        pygame.display.update()
-        pygame.display.flip()
-        pygame.time.delay(1000)
+            pygame.draw.circle(win, (255, 0, 0), space_ship_pos, radius=2)
+            
+            pygame.display.update()
+            pygame.display.flip()
+            
+            
 
-
+        pause(1000)
