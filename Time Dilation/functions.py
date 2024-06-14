@@ -1,6 +1,5 @@
 import numpy as np 
 import pygame 
-from datetime import datetime
 import time 
 
 def create_background(screen_width, screen_height, bg_color, line_color, font_small, units, length, after_stop = False):
