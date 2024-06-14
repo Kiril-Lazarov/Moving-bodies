@@ -127,12 +127,14 @@ def shift_screen_objects(screen_objects, step):
         screen_objects[key] = shift_funcs[key]
         
     return screen_objects
-
-
+        
 def pause(duration):
     start_time = pygame.time.get_ticks()
     while pygame.time.get_ticks() - start_time < duration:
-        pygame.event.pump()
+        time.sleep(0.1)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
 
         
 def clear_layer(params):
@@ -145,7 +147,8 @@ def update_display():
         
 # Writes explanations on the screen 
 def show_titles(win, title_layer, data_layer, background_surface, titles_font,
-                emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos, title, frame):
+                emitted_signals, start_angle, end_angle, rocket, receiver, space_ship_pos,
+                title, frame,frames_list, screen_height, screen_width):
     
     # Clear the title layer
     clear_layer({title_layer: (0,0,0,0)})
@@ -202,3 +205,5 @@ def show_titles(win, title_layer, data_layer, background_surface, titles_font,
             update_display()
             
         pause(1000)
+        
+        
