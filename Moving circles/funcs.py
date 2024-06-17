@@ -30,3 +30,13 @@ def get_rotation_angle_for_body2(rotation_angle):
         return rotation_angle + np.pi
     
     return rotation_angle - np.pi
+
+def get_barycenter(body1, body2):
+    masses = np.array([body1['mass'], body2['mass']])
+    masses_sum = np.sum([body1['mass'],body2['mass']])
+    bodies_x = np.array([body1['pos'][0],body2['pos'][0]])
+    bodies_y = np.array([body1['pos'][1],body2['pos'][1]])
+    
+    bary_x = np.dot(bodies_x, masses)/masses_sum
+    bary_y = np.dot(bodies_y, masses)/masses_sum
+    return bari_x, bari_y
